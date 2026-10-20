@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>落地页后台管理</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #f8f8f8; }
+    h1 { margin-bottom: 24px; }
+    label { display: block; margin-top: 16px; font-weight: 600; font-size: 14px; }
+    input, textarea { width: 100%; padding: 10px; margin-top: 6px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+    textarea { min-height: 80px; }
+    .row { display: flex; gap: 12px; }
+    .row > div { flex: 1; }
+    button { margin-top: 24px; background: #ff7a00; color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-size: 16px; cursor: pointer; }
+    button:hover { background: #e66a00; }
+    .msg { margin-top: 16px; padding: 12px; border-radius: 6px; display: none; }
+    .success { background: #e6ffed; color: #007a3d; }
+    .error { background: #ffe6e6; color: #c00; }
+    .section { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  </style>
+</head>
+<body>
+  <h1>落地页内容管理</h1>
+  <div id="msg" class="msg"></div>
+
+  <div class="section">
+    <h3>品牌与横幅</h3>
+    <label>页面标题</label>
+    <input id="pageTitle">
+    <label>品牌名称</label>
+    <input id="brandName">
+    <label>品牌副标题</label>
+    <input id="brandSubtitle">
+    <label>横幅主标题</label>
+    <input id="bannerTitle">
+    <label>横幅副标题</label>
+    <input id="bannerSubtitle">
+    <label>横幅图片 URL</label>
+    <input id="bannerImage" placeholder="/images/banner.jpg">
+    <label>头像 URL</label>
+    <input id="avatarUrl" placeholder="/images/avatar.jpg">
+  </div>
+
+  <div class="section">
+    <h3>聊天消息（每行一条，支持简单HTML）</h3>
+    <textarea id="messages" placeholder="您好，我是..."></textarea>
+  </div>
+
+  <div class="section">
+    <h3>产品图片（每行一个图片URL）</h3>
+    <textarea id="productImages"></textarea>
+  </div>
+
+  <div class="section">
+    <h3>按钮（格式：文字|链接，每行一个）</h3>
+    <textarea id="buttons" placeholder="手镯|#
+挂件|#
+找胡子私人定制|#"></textarea>
+  </div>
+
+  <div class="section">
+    <label>底部文字</label>
+    <input id="footer">
+  </div>
+
+  <button onclick="save()">保存修改</button>
+  <p style="margin-top:20px;color:#666;font-size:13px;">保存后刷新前台页面即可看到效果。图片请先上传到 /images 目录或使用外链。</p>
+
+  <script>
+    async function load() {
+      const res = await fetch('/api/config').catch(() => fetch('/config.json'));
+      const cfg = await res.json();
+      document.getElementById('pageTitle').value = cfg.pageTitle || '';
+      document.getElementById('brandName').value = cfg.brandName || '';
+      document.getElementById('brandSubtitle').value = cfg.brandSubtitle || '';
+      document.getElementById('bannerTitle').value = cfg.bannerTitle || '';
+      document.getElementById('bannerSubtitle').value = cfg.bannerSubtitle || '';
+      document.getElementById('bannerImage').value = cfg.bannerImage || '';
+      document.getElementById('avatarUrl').value = cfg.avatarUrl || '';
+      document.getElementById('footer').value = cfg.footer || '';
+      document.getElementById('messages').value = (cfg.messages || []).map(m => m.text).join('\n');
+      document.getElementById('productImages').value = (cfg.productImages || []).join('\n');
+      document.getElementById('buttons').value = (cfg.buttons || []).map(b => `${b.text}|${b.link}`).join('\n');
+    }
+
+    async function save() {
+      const messages = document.getElementById('messages').value.trim().split('\n').filter(Boolean).map(t => ({ type: 'seller', text: t }));
+      const productImages = document.getElementById('productImages').value.trim().split('\n').filter(Boolean);
+      const buttons = document.getElementById('buttons').value.trim().split('\n').filter(Boolean).map(line => {
+        const [text, link] = line.split('|');
+        return { text: text?.trim() || '', link: (link || '#').trim() };
+      });
+
+      const cfg = {
+        pageTitle: document.getElementById('pageTitle').value,
+        brandName: document.getElementById('brandName').value,
+        brandSubtitle: document.getElementById('brandSubtitle').value,
+        bannerTitle: document.getElementById('bannerTitle').value,
+        bannerSubtitle: document.getElementById('bannerSubtitle').value,
+        bannerImage: document.getElementById('bannerImage').value,
+        avatarUrl: document.getElementById('avatarUrl').value,
+        footer: document.getElementById('footer').value,
+        messages,
+        productImages,
+        buttons
+      };
+
+      const res = await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cfg)
+      });
+      const msg = document.getElementById('msg');
+      if (res.ok) {
+        msg.className = 'msg success';
+        msg.style.display = 'block';
+        msg.textContent = '保存成功！请刷新前台页面查看效果。';
+      } else {
+        msg.className = 'msg error';
+        msg.style.display = 'block';
+        msg.textContent = '保存失败，请检查服务器。';
+      }
+    }
+
+    load();
+  </script>
+</body>
+</html>
