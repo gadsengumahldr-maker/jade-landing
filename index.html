@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>匠心胡子翡翠手镯</title>
+  <title>小慧翡翠手镯</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -19,6 +19,7 @@
       width: 100%;
       background: linear-gradient(135deg, #1a1a1a 0%, #3d2b1f 100%);
       overflow: hidden;
+      min-height: 180px;
     }
     .banner img.main {
       width: 100%;
@@ -51,14 +52,14 @@
     }
     .banner-main-title {
       margin-top: 30px;
-      font-size: 26px;
+      font-size: 24px;
       font-weight: bold;
       color: #f5d78e;
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
     .banner-sub {
       margin-top: 8px;
-      font-size: 16px;
+      font-size: 15px;
       color: #eee;
     }
     .product-row {
@@ -78,13 +79,18 @@
       flex-shrink: 0;
     }
     .chat-area {
-      padding: 20px 16px;
+      padding: 20px 16px 10px;
       background: #f5f5f5;
+      min-height: 200px;
     }
     .msg {
       display: flex;
       align-items: flex-start;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      animation: fadeIn 0.3s ease;
+    }
+    .msg.user {
+      flex-direction: row-reverse;
     }
     .msg img.avatar {
       width: 40px;
@@ -92,6 +98,11 @@
       border-radius: 6px;
       margin-right: 10px;
       flex-shrink: 0;
+      object-fit: cover;
+    }
+    .msg.user img.avatar {
+      margin-right: 0;
+      margin-left: 10px;
     }
     .bubble {
       background: #fff;
@@ -99,9 +110,13 @@
       border-radius: 8px;
       font-size: 15px;
       line-height: 1.5;
-      max-width: 85%;
+      max-width: 80%;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06);
       position: relative;
+    }
+    .msg.user .bubble {
+      background: #95ec69;
+      color: #000;
     }
     .bubble::before {
       content: "";
@@ -114,39 +129,53 @@
       border-bottom: 6px solid transparent;
       border-right: 6px solid #fff;
     }
-    .buttons {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 20px 30px;
-      background: #f5f5f5;
+    .msg.user .bubble::before {
+      left: auto;
+      right: -6px;
+      border-right: none;
+      border-left: 6px solid #95ec69;
     }
-    .btn-row {
+    .options {
       display: flex;
-      gap: 12px;
-      width: 100%;
-      max-width: 360px;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px 16px 20px;
+      justify-content: flex-end;
     }
-    .btn {
-      flex: 1;
+    .opt-btn {
+      background: #fff;
+      border: 1px solid #ddd;
+      color: #333;
+      padding: 10px 22px;
+      border-radius: 20px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .opt-btn:active, .opt-btn.selected {
       background: #ff7a00;
       color: #fff;
+      border-color: #ff7a00;
+    }
+    .final-btn {
+      display: none;
+      width: calc(100% - 32px);
+      margin: 10px 16px 30px;
+      background: #07c160;
+      color: #fff;
       border: none;
-      padding: 14px 0;
+      padding: 16px 0;
       border-radius: 8px;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
+      font-size: 17px;
+      font-weight: 600;
       text-align: center;
       text-decoration: none;
+      cursor: pointer;
+    }
+    .final-btn.show {
       display: block;
+      animation: fadeIn 0.3s ease;
     }
-    .btn.full {
-      width: 100%;
-      max-width: 360px;
-    }
-    .btn:active { opacity: 0.9; }
     .footer {
       text-align: center;
       font-size: 12px;
@@ -154,105 +183,116 @@
       padding-bottom: 30px;
       background: #f5f5f5;
     }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
   <div class="banner" id="banner">
     <div class="banner-text">
-      <div class="brand-box" id="brandName">匠心胡子 <span id="brandSubtitle">深耕翡翠行业十几年的老炮</span></div>
+      <div class="brand-box" id="brandName">小慧翡翠 <span id="brandSubtitle">深耕翡翠多年</span></div>
       <div class="banner-main-title" id="bannerTitle">自有档口及翡翠工厂</div>
       <div class="banner-sub" id="bannerSubtitle">我不仅自己卖，我还自己做</div>
     </div>
-    <img class="main" id="bannerImg" src="./images/banner.jpg" alt="banner" onerror="this.style.display='none'">
+    <img class="main" id="bannerImg" src="./images/af778d5afc02ffb00df711d697be0e51.jpg" alt="banner" onerror="this.style.display='none'">
   </div>
 
   <div class="product-row" id="productRow"></div>
 
   <div class="chat-area" id="chatArea"></div>
 
-  <div class="buttons" id="buttonsArea"></div>
+  <div class="options" id="optionsArea"></div>
+
+  <a class="final-btn" id="finalBtn" href="https://wa.me/8619074104483" target="_blank">点此添加 小慧 WhatsApp 选翡翠</a>
 
   <div class="footer" id="footerText">所有成品支持7天无理由退货</div>
 
   <script>
-    async function loadConfig() {
-      try {
-        const res = await fetch('./config.json');
-        const cfg = await res.json();
-        render(cfg);
-      } catch (e) {
-        console.error(e);
-        render({
-          brandName: "匠心胡子",
-          brandSubtitle: "深耕翡翠行业十几年的老炮",
-          bannerTitle: "自有档口及翡翠工厂",
-          bannerSubtitle: "我不仅自己卖，我还自己做",
-          messages: [
-            { type: "seller", text: "您好，我是胡子，深耕翡翠十几年老炮，自有档口及加工厂，线上线下统一明码标价" },
-            { type: "seller", text: "是想挑款翡翠手镯还是挂件呢？" }
-          ],
-          buttons: [
-            { text: "手镯", link: "#" },
-            { text: "挂件", link: "#" },
-            { text: "找胡子私人定制", link: "#" }
-          ],
-          footer: "所有成品支持7天无理由退货",
-          productImages: []
-        });
+    const AVATAR = "./images/小慧.jpg";
+    const WA_LINK = "https://wa.me/8619074104483";
+    let step = 0;
+    let selectedType = "";
+    let selectedBudget = "";
+
+    const chatArea = document.getElementById("chatArea");
+    const optionsArea = document.getElementById("optionsArea");
+    const finalBtn = document.getElementById("finalBtn");
+
+    function addSellerMsg(text, delay = 0) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const div = document.createElement("div");
+          div.className = "msg";
+          div.innerHTML = `
+            <img class="avatar" src="${AVATAR}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect fill=%22%23ccc%22 width=%2240%22 height=%2240%22/></svg>'" >
+            <div class="bubble">${text}</div>
+          `;
+          chatArea.appendChild(div);
+          window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+          resolve();
+        }, delay);
+      });
+    }
+
+    function addUserMsg(text) {
+      const div = document.createElement("div");
+      div.className = "msg user";
+      div.innerHTML = `
+        <img class="avatar" src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect fill=%22%2395ec69%22 width=%2240%22 height=%2240%22/><text x=%2220%22 y=%2226%22 text-anchor=%22middle%22 fill=%22%23333%22 font-size=%2214%22>我</text></svg>">
+        <div class="bubble">${text}</div>
+      `;
+      chatArea.appendChild(div);
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+
+    function showOptions(options) {
+      optionsArea.innerHTML = "";
+      options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "opt-btn";
+        btn.textContent = opt;
+        btn.onclick = () => handleSelect(opt);
+        optionsArea.appendChild(btn);
+      });
+    }
+
+    async function handleSelect(value) {
+      optionsArea.innerHTML = "";
+      addUserMsg(value);
+
+      if (step === 1) {
+        selectedType = value;
+        step = 2;
+        await addSellerMsg("您预算大概多少呢？可以认真考虑下，再和我说您的预算范围", 600);
+        showOptions(["1万以下", "1-3万", "3-10万", "10万以上"]);
+      } else if (step === 2) {
+        selectedBudget = value;
+        step = 3;
+        await addSellerMsg("您点下方按钮添加我好友，<span style='color:#e65c00'>我发几款 细节和价格给您</span>，你看喜欢哪个。朋友圈每天更新工厂新货，也可以自主选货，随意对比。", 600);
+        finalBtn.classList.add("show");
+        finalBtn.href = WA_LINK + "?text=" + encodeURIComponent(`你好小慧，我想看${selectedType}，预算${selectedBudget}`);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
       }
     }
 
-    function render(cfg) {
-      document.title = cfg.pageTitle || "翡翠手镯";
-      document.getElementById('brandName').innerHTML = `${cfg.brandName} <span>${cfg.brandSubtitle || ''}</span>`;
-      document.getElementById('bannerTitle').textContent = cfg.bannerTitle || '';
-      document.getElementById('bannerSubtitle').textContent = cfg.bannerSubtitle || '';
-      if (cfg.bannerImage) document.getElementById('bannerImg').src = cfg.bannerImage;
-
-      const row = document.getElementById('productRow');
-      row.innerHTML = '';
-      (cfg.productImages || []).forEach(src => {
-        const img = document.createElement('img');
+    async function startChat() {
+      const row = document.getElementById("productRow");
+      ["./images/af778d5afc02ffb00df711d697be0e51.jpg"].forEach(src => {
+        const img = document.createElement("img");
         img.src = src;
-        img.onerror = () => img.style.display = 'none';
+        img.onerror = () => img.style.display = "none";
         row.appendChild(img);
       });
 
-      const chat = document.getElementById('chatArea');
-      chat.innerHTML = '';
-      (cfg.messages || []).forEach(m => {
-        const div = document.createElement('div');
-        div.className = 'msg';
-        div.innerHTML = `
-          <img class="avatar" src="${cfg.avatarUrl || './images/avatar.jpg'}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect fill=%22%23ccc%22 width=%2240%22 height=%2240%22/></svg>'">
-          <div class="bubble">${m.text}</div>
-        `;
-        chat.appendChild(div);
-      });
-
-      const btns = document.getElementById('buttonsArea');
-      btns.innerHTML = '';
-      const buttons = cfg.buttons || [];
-      if (buttons.length >= 2) {
-        const row1 = document.createElement('div');
-        row1.className = 'btn-row';
-        row1.innerHTML = `
-          <a class="btn" href="${buttons[0].link || '#'}">${buttons[0].text}</a>
-          <a class="btn" href="${buttons[1].link || '#'}">${buttons[1].text}</a>
-        `;
-        btns.appendChild(row1);
-      }
-      if (buttons[2]) {
-        const a = document.createElement('a');
-        a.className = 'btn full';
-        a.href = buttons[2].link || '#';
-        a.textContent = buttons[2].text;
-        btns.appendChild(a);
-      }
-      document.getElementById('footerText').textContent = cfg.footer || '';
+      await addSellerMsg("您好，我是小慧，深耕翡翠多年，自有货源，<span style='color:#e65c00'>线上线下统一明码标价</span>", 300);
+      await addSellerMsg("是想挑款翡翠手镯还是挂件呢？", 800);
+      step = 1;
+      showOptions(["手镯", "挂件"]);
     }
 
-    loadConfig();
+    startChat();
   </script>
 </body>
 </html>
