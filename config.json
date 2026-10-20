@@ -1,20 +1,28 @@
-"brandName": "你的品牌名（比如小慧翡翠）",
-"brandSubtitle": "深耕翡翠行业X年",
-"bannerTitle": "自有档口及翡翠工厂",
-"bannerSubtitle": "我不仅自己卖，我还自己做",
-"messages": [
-  {
-    "type": "seller",
-    "text": "您好，我是小慧，深耕翡翠多年，自有货源，线上线下统一明码标价"
-  },
-  {
-    "type": "seller",
-    "text": "是想挑款翡翠手镯还是挂件呢？"
-  }
-],
-"buttons": [
-  { "text": "手镯", "link": "你的微信链接或表单地址" },
-  { "text": "挂件", "link": "你的链接" },
-  { "text": "找小慧私人定制", "link": "你的链接" }
-],
-"footer": "所有成品支持7天无理由退货"
+{
+  "pageTitle": "小慧翡翠手镯",
+  "brandName": "小慧翡翠",
+  "brandSubtitle": "深耕翡翠多年",
+  "bannerTitle": "自有档口及翡翠工厂",
+  "bannerSubtitle": "我不仅自己卖，我还自己做",
+  "avatarUrl": "./images/小慧.jpg",
+  "bannerImage": "./images/af778d5afc02ffb00df711d697be0e51.jpg",
+  "productImages": [
+    "./images/af778d5afc02ffb00df711d697be0e51.jpg"
+  ],
+  "messages": [
+    {
+      "type": "seller",
+      "text": "您好，我是小慧，深耕翡翠多年，自有货源，<span style='color:#e65c00'>线上线下统一明码标价</span>"
+    },
+    {
+      "type": "seller",
+      "text": "是想挑款翡翠手镯还是挂件呢？"
+    }
+  ],
+  "buttons": [
+    { "text": "手镯", "link": "#" },
+    { "text": "挂件", "link": "#" },
+    { "text": "找小慧私人定制", "link": "#" }
+  ],
+  "footer": "所有成品支持7天无理由退货"
+}
