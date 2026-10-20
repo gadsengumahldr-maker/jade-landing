@@ -1,0 +1,12 @@
+{
+  "name": "jade-landing",
+  "version": "1.0.0",
+  "description": "翡翠落地页 + 独立后台",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
